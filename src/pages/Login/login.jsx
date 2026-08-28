@@ -1,23 +1,42 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import "./login.css";
-import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../Api/auth";
 
 function Login() {
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Login checking will come here later
+    try {
+      const response = await loginUser(email, password);
 
-    navigate("/dashboard");
+      console.log(response);
+
+      if (response.ok) {
+        alert(response.data.message);
+        navigate("/dashboard");
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Unable to connect to server");
+    }
   };
+
   return (
     <div className="auth-wrapper">
       <div className="login-container">
         <div className="login-header">
           <h1>Welcome Back</h1>
-          <p className="subtitle">Please enter your details to sign in</p>
+          <p className="subtitle">
+            Please enter your details to sign in
+          </p>
         </div>
 
         <form className="login-form" onSubmit={handleLogin}>
@@ -27,6 +46,8 @@ function Login() {
               id="email"
               type="email"
               placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -37,6 +58,8 @@ function Login() {
               id="password"
               type="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
