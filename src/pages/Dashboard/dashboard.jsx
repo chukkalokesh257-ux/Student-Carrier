@@ -63,10 +63,14 @@ function Dashboard() {
               <span>Student Profile</span>
             </button>
 
-            <button className="menu-item">
+            <Link 
+              to="/roadmap" 
+              className="menu-item"
+              onClick={() => setSidebarOpen(false)}
+            >
               🗺️
               <span>Roadmap</span>
-            </button>
+            </Link>
 
             <button className="menu-item">
               📊
